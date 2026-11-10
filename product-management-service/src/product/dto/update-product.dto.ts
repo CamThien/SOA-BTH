@@ -6,11 +6,13 @@ import {
   MaxLength,
   IsNumber,
   Min,
+  Max,
+  ValidateIf,
   IsInt,
 } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsOptional()
+  @ValidateIf((_object, value) => value !== undefined)
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
@@ -20,13 +22,15 @@ export class UpdateProductDto {
   @IsString()
   description?: string;
 
-  @IsOptional()
+  @ValidateIf((_object, value) => value !== undefined)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
+  @Max(99999999.99)
   price?: number;
 
-  @IsOptional()
+  @ValidateIf((_object, value) => value !== undefined)
   @IsInt()
   @Min(0)
+  @Max(2147483647)
   quantity?: number;
 }
