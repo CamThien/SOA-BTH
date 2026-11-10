@@ -7,6 +7,8 @@ app.use(express.json());
 // Gắn Router vào ứng dụng
 app.use('/', authRoutes);
 
-app.listen(3000, () => {
-  console.log('Server SOA đang chạy tại: http://localhost:3000');
+const port = Number(process.env.PORT || 3000);
+
+app.listen(port, () => {
+  console.log(`Server SOA đang chạy tại: http://localhost:${port}`);
 });
