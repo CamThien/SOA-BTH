@@ -1,18 +1,22 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductModule } from './product/product.module';
 
+import { ProductModule } from './product/product.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
+  controllers: [AppController],
+  providers: [AppService],
   imports: [
+
     TypeOrmModule.forRoot({
       type: 'mssql',
-      host: 'localhost',
-      port: 1433,
-      username: 'sa',
-      password: '123456',
-      database: 'product_db',
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT || 1433),
+      username: process.env.DB_USER || 'sa',
+      password: process.env.DB_PASSWORD || '123456',
+      database: process.env.DB_NAME || 'product_db',
       autoLoadEntities: true,
       synchronize: false,
       options: {
@@ -20,6 +24,7 @@ import { ProductModule } from './product/product.module';
         trustServerCertificate: true,
       },
     }),
+
     ProductModule,
   ],
 })

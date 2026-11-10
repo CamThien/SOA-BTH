@@ -14,7 +14,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3001);
+  await app.listen(Number(process.env.PORT || 3001));
   console.log('Product Service is running at http://localhost:3001');
 }
 
