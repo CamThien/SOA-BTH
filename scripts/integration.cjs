@@ -33,6 +33,13 @@ async function api(port,method,url,body,status=200,auth=true) {
  let order;
  try {
   await api(3301,'PUT',`/products/${product.id}`,{quantity:12});
+  for (const field of ['name','price','quantity']) {
+   await api(3301,'PUT',`/products/${product.id}`,{[field]:null},400);
+  }
+  for (const invalid of [{price:100000000},{quantity:2147483648}]) {
+   await api(3301,'POST','/products',{name:'Overflow',price:1,quantity:1,...invalid},400);
+   await api(3301,'PUT',`/products/${product.id}`,invalid,400);
+  }
   await api(3301,'GET',`/products/${product.id}`);
   await api(3302,'POST','/orders',{customer_name:'Test',customer_email:'test@example.com',items:[{product_id:product.id,quantity:13}]},400);
   await api(3302,'POST','/orders',{customer_name:'Test',customer_email:'bad',items:[]},400);
