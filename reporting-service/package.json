@@ -1,0 +1,34 @@
+{
+  "name": "reporting-service",
+  "version": "0.0.1",
+  "description": "Bai thuc hanh 5 - Reporting service",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "db:setup": "node scripts/setup-db.cjs"
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.0.1",
+    "@nestjs/config": "^12.1.1",
+    "@nestjs/core": "^12.0.1",
+    "@nestjs/platform-express": "^12.0.1",
+    "@nestjs/typeorm": "^12.0.3",
+    "axios": "^1.21.1",
+    "mssql": "^12.7.14",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "typeorm": "^1.1.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^12.0.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^6.0.2"
+  }
+}

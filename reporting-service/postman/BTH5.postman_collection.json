@@ -1,0 +1,253 @@
+{
+  "info": {
+    "name": "BTH5 - Reporting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Set order_id, product_id, costs from your real data. costs is the JSON array of actual unit costs for EVERY product in the completed order. Report IDs are the IDs returned from reporting POST requests."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "auth_base",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "product_base",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "order_base",
+      "value": "http://localhost:3002",
+      "type": "string"
+    },
+    {
+      "key": "report_base",
+      "value": "http://localhost:3003",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_report_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_report_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "costs",
+      "value": "[]",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Dang nhap bai 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{auth_base}}/",
+        "description": "",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userName\": \"admin\",\n  \"password\": \"e10adc3949ba59abbe56e057f20f883e\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  const token = pm.response.json().token;",
+              "  if (token) pm.collectionVariables.set(\"token\", token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Xem du lieu that bai 3 va 4",
+      "item": [
+        {
+          "name": "Danh sach san pham",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{product_base}}/products",
+            "description": ""
+          }
+        },
+        {
+          "name": "Danh sach don hang",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{order_base}}/orders",
+            "description": ""
+          }
+        },
+        {
+          "name": "Chi tiet don hang",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{order_base}}/orders/{{order_id}}",
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Bao cao don hang",
+      "item": [
+        {
+          "name": "Tao bao cao don",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{report_base}}/reports/orders",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": {{order_id}},\n  \"costs\": {{costs}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Danh sach bao cao don",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{report_base}}/reports/orders",
+            "description": ""
+          }
+        },
+        {
+          "name": "Chi tiet bao cao don",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{report_base}}/reports/orders/{{order_report_id}}",
+            "description": ""
+          }
+        },
+        {
+          "name": "Xoa bao cao don",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{report_base}}/reports/orders/{{order_report_id}}",
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Bao cao san pham",
+      "item": [
+        {
+          "name": "Tao bao cao san pham",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{report_base}}/reports/products",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_report_id\": {{order_report_id}},\n  \"product_id\": {{product_id}},\n  \"costs\": {{costs}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Danh sach bao cao san pham",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{report_base}}/reports/products",
+            "description": ""
+          }
+        },
+        {
+          "name": "Chi tiet bao cao san pham",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{report_base}}/reports/products/{{product_report_id}}",
+            "description": ""
+          }
+        },
+        {
+          "name": "Xoa bao cao san pham",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{report_base}}/reports/products/{{product_report_id}}",
+            "description": ""
+          }
+        }
+      ]
+    }
+  ]
+}
